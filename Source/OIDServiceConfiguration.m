@@ -48,7 +48,7 @@ static NSString *const kDiscoveryDocumentKey = @"discoveryDocument";
 
 /*! @brief The key for the @c secretOnBodyForTokenRequest property.
  */
-static NSString *const kSecretOnBody = @"secretOnBodyForTokenRequest";
+static NSString *const kEnabledRFCAuthorization = @"enabledRFCAuthorization";
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
                          registrationEndpoint:(nullable NSURL *)registrationEndpoint
                            endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
                             discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument
-                            NS_DESIGNATED_INITIALIZER;
+                        enableRFCAuthorization:(nullable NSNumber *)enableRFCAuthorization NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -77,20 +77,22 @@ NS_ASSUME_NONNULL_BEGIN
         tokenEndpoint:(NSURL *)tokenEndpoint
                issuer:(nullable NSURL *)issuer
  registrationEndpoint:(nullable NSURL *)registrationEndpoint
-   endSessionEndpoint:(nullable OIDServiceDiscovery *)endSessionEndpoint
+   endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
     discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument {
-
-  self = [super init];
-  if (self) {
-    _authorizationEndpoint = [authorizationEndpoint copy];
-    _tokenEndpoint = [tokenEndpoint copy];
-    _issuer = [issuer copy];
-    _registrationEndpoint = [registrationEndpoint copy];
-    _endSessionEndpoint = [endSessionEndpoint copy];
-    _discoveryDocument = [discoveryDocument copy];
-    _secretOnBodyForTokenRequest = YES;
-  }
-  return self;
+  return [self initWithAuthorizationEndpoint:authorizationEndpoint tokenEndpoint:tokenEndpoint
+             issuer:issuer
+    registrationEndpoint:registrationEndpoint endSessionEndpoint:endSessionEndpoint discoveryDocument:discoveryDocument enableRFCAuthorization:@(YES)];
+//  self = [super init];
+//  if (self) {
+//    _authorizationEndpoint = [authorizationEndpoint copy];
+//    _tokenEndpoint = [tokenEndpoint copy];
+//    _issuer = [issuer copy];
+//    _registrationEndpoint = [registrationEndpoint copy];
+//    _endSessionEndpoint = [endSessionEndpoint copy];
+//    _discoveryDocument = [discoveryDocument copy];
+//    _enableRFCAuthorization = @(YES);
+//  }
+//  return self;
 }
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
@@ -156,7 +158,29 @@ NS_ASSUME_NONNULL_BEGIN
                                       issuer:discoveryDocument.issuer
                         registrationEndpoint:discoveryDocument.registrationEndpoint
                           endSessionEndpoint:discoveryDocument.endSessionEndpoint
-                           discoveryDocument:discoveryDocument];
+                           discoveryDocument:discoveryDocument
+                          enableRFCAuthorization:@(YES)];
+}
+
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+                                tokenEndpoint:(NSURL *)tokenEndpoint
+                                       issuer:(nullable NSURL *)issuer
+                         registrationEndpoint:(nullable NSURL *)registrationEndpoint
+                           endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
+                            discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument
+                       enableRFCAuthorization:(nullable NSNumber *)enableRFCAuthorization{
+
+  self = [super init];
+  if (self) {
+    _authorizationEndpoint = [authorizationEndpoint copy];
+    _tokenEndpoint = [tokenEndpoint copy];
+    _issuer = [issuer copy];
+    _registrationEndpoint = [registrationEndpoint copy];
+    _endSessionEndpoint = [endSessionEndpoint copy];
+    _discoveryDocument = [discoveryDocument copy];
+    _enabledRFCAuthorization = enableRFCAuthorization;
+  }
+  return self;
 }
 
 #pragma mark - NSCopying
@@ -186,6 +210,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                        forKey:kRegistrationEndpointKey];
   NSURL *endSessionEndpoint = [aDecoder decodeObjectOfClass:[NSURL class]
                                                        forKey:kEndSessionEndpointKey];
+  NSNumber *enableRFCAuthorization = [aDecoder decodeObjectOfClass:[NSNumber class]
+  forKey:kEnabledRFCAuthorization];
+  
   // We don't accept nil authorizationEndpoints or tokenEndpoints.
   if (!authorizationEndpoint || !tokenEndpoint) {
     return nil;
@@ -199,7 +226,8 @@ NS_ASSUME_NONNULL_BEGIN
                                       issuer:issuer
                         registrationEndpoint:registrationEndpoint
                           endSessionEndpoint:endSessionEndpoint
-                           discoveryDocument:discoveryDocument];
+                           discoveryDocument:discoveryDocument
+                            enableRFCAuthorization:enableRFCAuthorization];
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
@@ -209,6 +237,7 @@ NS_ASSUME_NONNULL_BEGIN
   [aCoder encodeObject:_registrationEndpoint forKey:kRegistrationEndpointKey];
   [aCoder encodeObject:_discoveryDocument forKey:kDiscoveryDocumentKey];
   [aCoder encodeObject:_endSessionEndpoint forKey:kEndSessionEndpointKey];
+  [aCoder encodeObject:_enabledRFCAuthorization forKey:kEnabledRFCAuthorization];
 }
 
 #pragma mark - description

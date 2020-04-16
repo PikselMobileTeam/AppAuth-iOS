@@ -276,7 +276,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   OIDURLQueryComponent *bodyParameters = [self tokenRequestBody];
   NSMutableDictionary *httpHeaders = [[NSMutableDictionary alloc] init];
 
-  if (_clientSecret && !_configuration.secretOnBodyForTokenRequest) {
+  if (_clientSecret && !_configuration.enabledRFCAuthorization) {
     // The client id and secret are encoded using the "application/x-www-form-urlencoded" 
     // encoding algorithm per RFC 6749 Section 2.3.1.
     // https://tools.ietf.org/html/rfc6749#section-2.3.1
@@ -290,7 +290,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
     NSString *authValue = [NSString stringWithFormat:@"Basic %@", basicAuth];
     [httpHeaders setObject:authValue forKey:@"Authorization"];
-  }else if (_clientSecret && _configuration.secretOnBodyForTokenRequest){
+  }else if (_clientSecret && _configuration.enabledRFCAuthorization){
     [bodyParameters addParameter:kSecretClient value:_clientSecret];
     [bodyParameters addParameter:kClientIDKey value:_clientID];
   } else {

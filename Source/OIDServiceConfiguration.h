@@ -58,9 +58,9 @@ typedef void (^OIDServiceConfigurationCreated)
  */
 @property(nonatomic, readonly, nullable) OIDServiceDiscovery *discoveryDocument;
 
-/*! @brief The client secret on request body token.
+/*! @brief The RFC 6749 enable.
  */
-@property(nonatomic) BOOL secretOnBodyForTokenRequest;
+@property(nonatomic, readonly, nullable) NSNumber *enabledRFCAuthorization;
 
 /*! @internal
     @brief Unavailable. Please use @c initWithAuthorizationEndpoint:tokenEndpoint: or
@@ -111,6 +111,21 @@ typedef void (^OIDServiceConfigurationCreated)
                                        issuer:(nullable NSURL *)issuer
                          registrationEndpoint:(nullable NSURL *)registrationEndpoint
                            endSessionEndpoint:(nullable NSURL *)endSessionEndpoint;
+
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+                                tokenEndpoint:(NSURL *)tokenEndpoint
+                                       issuer:(nullable NSURL *)issuer
+                         registrationEndpoint:(nullable NSURL *)registrationEndpoint
+                           endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
+                            discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument;
+
+//- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+//                                tokenEndpoint:(NSURL *)tokenEndpoint
+//                                       issuer:(nullable NSURL *)issuer
+//                         registrationEndpoint:(nullable NSURL *)registrationEndpoint
+//                           endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
+//                            discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument
+//                       enableRFCAuthorization:(nullable NSNumber *)enableRFCAuthorization;
 
 /*! @param discoveryDocument The discovery document from which to extract the required OAuth
         configuration.
