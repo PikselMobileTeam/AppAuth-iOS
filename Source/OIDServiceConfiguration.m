@@ -46,6 +46,11 @@ static NSString *const kEndSessionEndpointKey = @"endSessionEndpoint";
  */
 static NSString *const kDiscoveryDocumentKey = @"discoveryDocument";
 
+/*! @brief The key for the @c secretOnBodyForTokenRequest property.
+ */
+static NSString *const kSecretOnBody = @"secretOnBodyForTokenRequest";
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OIDServiceConfiguration ()
@@ -83,6 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
     _registrationEndpoint = [registrationEndpoint copy];
     _endSessionEndpoint = [endSessionEndpoint copy];
     _discoveryDocument = [discoveryDocument copy];
+    _secretOnBodyForTokenRequest = false;
   }
   return self;
 }

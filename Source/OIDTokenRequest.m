@@ -62,6 +62,8 @@ static NSString *const kRefreshTokenKey = @"refresh_token";
  */
 static NSString *const kCodeVerifierKey = @"code_verifier";
 
+static NSString *const kSecretClient = @"client_secret";
+
 /*! @brief Key used to encode the @c additionalParameters property for
         @c NSSecureCoding
  */
@@ -274,7 +276,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   OIDURLQueryComponent *bodyParameters = [self tokenRequestBody];
   NSMutableDictionary *httpHeaders = [[NSMutableDictionary alloc] init];
 
-  if (_clientSecret) {
+  if (_clientSecret && !_configuration.secretOnBodyForTokenRequest) {
     // The client id and secret are encoded using the "application/x-www-form-urlencoded" 
     // encoding algorithm per RFC 6749 Section 2.3.1.
     // https://tools.ietf.org/html/rfc6749#section-2.3.1
@@ -288,7 +290,10 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
     NSString *authValue = [NSString stringWithFormat:@"Basic %@", basicAuth];
     [httpHeaders setObject:authValue forKey:@"Authorization"];
-  } else  {
+  }else if (_clientSecret && _configuration.secretOnBodyForTokenRequest){
+    [bodyParameters addParameter:kSecretClient value:_clientSecret];
+    [bodyParameters addParameter:kClientIDKey value:_clientID];
+  } else {
     [bodyParameters addParameter:kClientIDKey value:_clientID];
   }
 

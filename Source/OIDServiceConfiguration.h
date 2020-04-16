@@ -58,6 +58,10 @@ typedef void (^OIDServiceConfigurationCreated)
  */
 @property(nonatomic, readonly, nullable) OIDServiceDiscovery *discoveryDocument;
 
+/*! @brief The client secret on request body token.
+ */
+@property(nonatomic) Bool secretOnBodyForTokenRequest;
+
 /*! @internal
     @brief Unavailable. Please use @c initWithAuthorizationEndpoint:tokenEndpoint: or
         @c initWithDiscoveryDocument:.
