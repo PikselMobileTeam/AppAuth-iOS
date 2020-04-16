@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
                          registrationEndpoint:(nullable NSURL *)registrationEndpoint
                            endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
                             discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument
-                        enableRFCAuthorization:(nullable NSNumber *)enableRFCAuthorization NS_DESIGNATED_INITIALIZER;
+                        rfcAuthorizationEnabled:(nullable NSNumber *)rfcAuthorizationEnabled NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -79,20 +79,12 @@ NS_ASSUME_NONNULL_BEGIN
  registrationEndpoint:(nullable NSURL *)registrationEndpoint
    endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
     discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument {
-  return [self initWithAuthorizationEndpoint:authorizationEndpoint tokenEndpoint:tokenEndpoint
-             issuer:issuer
-    registrationEndpoint:registrationEndpoint endSessionEndpoint:endSessionEndpoint discoveryDocument:discoveryDocument enableRFCAuthorization:@(YES)];
-//  self = [super init];
-//  if (self) {
-//    _authorizationEndpoint = [authorizationEndpoint copy];
-//    _tokenEndpoint = [tokenEndpoint copy];
-//    _issuer = [issuer copy];
-//    _registrationEndpoint = [registrationEndpoint copy];
-//    _endSessionEndpoint = [endSessionEndpoint copy];
-//    _discoveryDocument = [discoveryDocument copy];
-//    _enableRFCAuthorization = @(YES);
-//  }
-//  return self;
+  return [self initWithAuthorizationEndpoint:authorizationEndpoint                                                tokenEndpoint:tokenEndpoint
+                                      issuer:issuer
+                        registrationEndpoint:registrationEndpoint
+                          endSessionEndpoint:endSessionEndpoint
+                           discoveryDocument:discoveryDocument
+                     rfcAuthorizationEnabled:@(YES)];
 }
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
@@ -103,6 +95,17 @@ NS_ASSUME_NONNULL_BEGIN
                         registrationEndpoint:nil
                           endSessionEndpoint:nil
                            discoveryDocument:nil];
+}
+
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+                                tokenEndpoint:(NSURL *)tokenEndpoint
+                      rfcAuthorizationEnabled:(nullable NSNumber *)rfcAuthorizationEnabled{
+  return [self initWithAuthorizationEndpoint:authorizationEndpoint
+                               tokenEndpoint:tokenEndpoint issuer:nil
+                        registrationEndpoint:nil
+                          endSessionEndpoint:nil
+                           discoveryDocument:nil
+                     rfcAuthorizationEnabled:rfcAuthorizationEnabled];
 }
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
@@ -159,7 +162,7 @@ NS_ASSUME_NONNULL_BEGIN
                         registrationEndpoint:discoveryDocument.registrationEndpoint
                           endSessionEndpoint:discoveryDocument.endSessionEndpoint
                            discoveryDocument:discoveryDocument
-                          enableRFCAuthorization:@(YES)];
+                          rfcAuthorizationEnabled:@(YES)];
 }
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
@@ -168,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
                          registrationEndpoint:(nullable NSURL *)registrationEndpoint
                            endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
                             discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument
-                       enableRFCAuthorization:(nullable NSNumber *)enableRFCAuthorization{
+                       rfcAuthorizationEnabled:(nullable NSNumber *)rfcAuthorizationEnabled{
 
   self = [super init];
   if (self) {
@@ -178,7 +181,7 @@ NS_ASSUME_NONNULL_BEGIN
     _registrationEndpoint = [registrationEndpoint copy];
     _endSessionEndpoint = [endSessionEndpoint copy];
     _discoveryDocument = [discoveryDocument copy];
-    _enabledRFCAuthorization = enableRFCAuthorization;
+    _enabledRFCAuthorization = rfcAuthorizationEnabled;
   }
   return self;
 }
@@ -227,7 +230,7 @@ NS_ASSUME_NONNULL_BEGIN
                         registrationEndpoint:registrationEndpoint
                           endSessionEndpoint:endSessionEndpoint
                            discoveryDocument:discoveryDocument
-                            enableRFCAuthorization:enableRFCAuthorization];
+                            rfcAuthorizationEnabled:enableRFCAuthorization];
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {

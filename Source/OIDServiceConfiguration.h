@@ -76,6 +76,14 @@ typedef void (^OIDServiceConfigurationCreated)
 
 /*! @param authorizationEndpoint The authorization endpoint URI.
     @param tokenEndpoint The token exchange and refresh endpoint URI.
+    @param rfcAuthorizationEnabled enabled RFC 6749.
+*/
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+                                tokenEndpoint:(NSURL *)tokenEndpoint
+                       rfcAuthorizationEnabled:(nullable NSNumber *)rfcAuthorizationEnabled;
+
+/*! @param authorizationEndpoint The authorization endpoint URI.
+    @param tokenEndpoint The token exchange and refresh endpoint URI.
     @param registrationEndpoint The dynamic client registration endpoint URI.
  */
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
@@ -119,13 +127,13 @@ typedef void (^OIDServiceConfigurationCreated)
                            endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
                             discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument;
 
-//- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
-//                                tokenEndpoint:(NSURL *)tokenEndpoint
-//                                       issuer:(nullable NSURL *)issuer
-//                         registrationEndpoint:(nullable NSURL *)registrationEndpoint
-//                           endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
-//                            discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument
-//                       enableRFCAuthorization:(nullable NSNumber *)enableRFCAuthorization;
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+                                tokenEndpoint:(NSURL *)tokenEndpoint
+                                       issuer:(nullable NSURL *)issuer
+                         registrationEndpoint:(nullable NSURL *)registrationEndpoint
+                           endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
+                            discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument
+                       rfcAuthorizationEnabled:(nullable NSNumber *)rfcAuthorizationEnabled;
 
 /*! @param discoveryDocument The discovery document from which to extract the required OAuth
         configuration.
