@@ -88,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
     _registrationEndpoint = [registrationEndpoint copy];
     _endSessionEndpoint = [endSessionEndpoint copy];
     _discoveryDocument = [discoveryDocument copy];
-    _secretOnBodyForTokenRequest = false;
+    _secretOnBodyForTokenRequest = YES;
   }
   return self;
 }

@@ -60,7 +60,7 @@ typedef void (^OIDServiceConfigurationCreated)
 
 /*! @brief The client secret on request body token.
  */
-@property(nonatomic) Bool secretOnBodyForTokenRequest;
+@property(nonatomic) BOOL secretOnBodyForTokenRequest;
 
 /*! @internal
     @brief Unavailable. Please use @c initWithAuthorizationEndpoint:tokenEndpoint: or
